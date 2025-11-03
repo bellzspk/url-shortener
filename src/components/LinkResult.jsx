@@ -14,6 +14,14 @@ const LinkResult = ({ inputValue }) => {
       setShortenLink(inputValue);
     }
   }, [inputValue]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [copied]);
+  
   return (
     <>
       {shortenLink && (

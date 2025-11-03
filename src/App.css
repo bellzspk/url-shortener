@@ -74,6 +74,11 @@
   border: none;
 }
 
+.result button.copied {
+    background: white;
+    color: var(--primary-color);
+}
+
 /* background animate */
 
 @keyframes animate {
