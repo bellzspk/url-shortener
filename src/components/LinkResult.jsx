@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 const LinkResult = ({ inputValue }) => {
   const [shortenLink, setShortenLink] = useState("");
   const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -12,14 +14,19 @@ const LinkResult = ({ inputValue }) => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
+
       const res = await axios(
         `https://tinyurl.com/api-create.php?url=${encodeURIComponent(
           inputValue
         )}`
       );
+
       setShortenLink(res.data);
     } catch (error) {
+      setError(error);
     } finally {
+      setLoading(false);
     }
   };
 
@@ -35,6 +42,14 @@ const LinkResult = ({ inputValue }) => {
     }, 1000);
     return () => clearTimeout(timer);
   }, [copied]);
+
+  if (loading) {
+    return <p className="noData">Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="noData">Something went wrong :(</p>;
+  }
 
   return (
     <>
