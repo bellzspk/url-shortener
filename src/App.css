@@ -8,6 +8,7 @@
 
 .inputContainer h1 {
   font-family: "Momo Trust Display", sans-serif;
+  color: white;
   font-size: 3.2rem;
 }
 
@@ -24,6 +25,7 @@
   width: 100%;
   padding: 0.5rem 0.2rem 0.5rem 0;
   text-indent: 1rem;
+  border: none;
   outline: none;
   font-size: 1rem;
   border-top-left-radius: 3px;
@@ -48,6 +50,8 @@
   cursor: pointer;
 }
 
+/* result */
+
 .result {
   display: flex;
   align-items: center;
@@ -56,6 +60,7 @@
 }
 
 .result p {
+  color: white;
   border: 1px solid var(--primary-color);
   padding: 0.5rem 1rem;
   margin-right: 1rem;
