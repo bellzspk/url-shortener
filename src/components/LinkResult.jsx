@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 const LinkResult = ({ inputValue }) => {
@@ -9,9 +10,22 @@ const LinkResult = ({ inputValue }) => {
     setCopied(true);
   };
 
+  const fetchData = async () => {
+    try {
+      const res = await axios(
+        `https://tinyurl.com/api-create.php?url=${encodeURIComponent(
+          inputValue
+        )}`
+      );
+      setShortenLink(res.data);
+    } catch (error) {
+    } finally {
+    }
+  };
+
   useEffect(() => {
     if (inputValue.length) {
-      setShortenLink(inputValue);
+      fetchData();
     }
   }, [inputValue]);
 
@@ -21,7 +35,7 @@ const LinkResult = ({ inputValue }) => {
     }, 1000);
     return () => clearTimeout(timer);
   }, [copied]);
-  
+
   return (
     <>
       {shortenLink && (
