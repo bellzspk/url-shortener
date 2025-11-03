@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const LinkResult = () => {
-  const [shortenLink, setShortenLink] = useState("Hello World !");
-
+const LinkResult = ({ inputValue }) => {
+  const [shortenLink, setShortenLink] = useState("");
+  useEffect(() => {
+    if (inputValue.length) {
+      setShortenLink(inputValue);
+    }
+  }, [inputValue]);
   return (
     <>
-      <div className="result">
-        <p>{shortenLink}</p>
-        <button>Copy to clipboard</button>
-      </div>
+      {shortenLink && (
+        <div className="result">
+          <p>{shortenLink}</p>
+          <button>Copy to clipboard</button>
+        </div>
+      )}
     </>
   );
 };
