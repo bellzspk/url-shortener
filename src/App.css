@@ -79,6 +79,11 @@
     color: var(--primary-color);
 }
 
+.noData {
+  color: white;
+  font-size: 1rem;
+}
+
 /* background animate */
 
 @keyframes animate {
