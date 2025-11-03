@@ -16,7 +16,7 @@ const InputShortener = ({ setInputValue }) => {
       <div>
         <input
           type="text"
-          placeholder="Paste a link to shorten it"
+          placeholder="Paste your long URL here..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
