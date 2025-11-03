@@ -15,16 +15,18 @@ const LinkResult = ({ inputValue }) => {
   const fetchData = async () => {
     try {
       setLoading(true);
-
+      setError(false); 
+      setShortenLink(""); 
+    
       const res = await axios(
         `https://tinyurl.com/api-create.php?url=${encodeURIComponent(
           inputValue
         )}`
       );
-
+      
       setShortenLink(res.data);
     } catch (error) {
-      setError(error);
+      setError(true); 
     } finally {
       setLoading(false);
     }
@@ -33,6 +35,9 @@ const LinkResult = ({ inputValue }) => {
   useEffect(() => {
     if (inputValue.length) {
       fetchData();
+    } else {
+      setShortenLink("");
+      setError(false);
     }
   }, [inputValue]);
 
