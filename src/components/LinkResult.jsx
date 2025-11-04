@@ -68,7 +68,7 @@ const LinkResult = ({
       setError(false);
       return;
     }
-
+    setError(false);
     fetchData();
   }, [inputValue]);
 
@@ -94,17 +94,19 @@ const LinkResult = ({
     return () => clearTimeout(timer);
   }, [copied]);
 
-  if (loading) {
-    return <p className="noData">Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p className="noData">Loading...</p>;
+  // }
 
-  if (error) {
-    return <p className="noData">Something went wrong :(</p>;
-  }
+  // if (error) {
+  //   return <p className="noData">Something went wrong :(</p>;
+  // }
 
   return (
     <>
-      {shortenLink && (
+      {loading && <p className="noData">Loading...</p>}
+      {error && <p className="noData">Something went wrong :(</p>}
+      {shortenLink && !loading && !error && (
         <div className="result">
           <p>{shortenLink}</p>
           <button
