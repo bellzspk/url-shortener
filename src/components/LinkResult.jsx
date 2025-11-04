@@ -1,7 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import History from "./History";
 
-const LinkResult = ({ inputValue }) => {
+const LinkResult = ({
+  inputValue,
+  urlHistory,
+  urlCache,
+  setUrlHistory,
+  setUrlCache,
+}) => {
   const [shortenLink, setShortenLink] = useState("");
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -13,35 +20,74 @@ const LinkResult = ({ inputValue }) => {
   };
 
   const fetchData = async () => {
+    // Check if URL already exists in cache
+    if (urlCache[inputValue]) {
+      setShortenLink(urlCache[inputValue]);
+      return;
+    }
+
     try {
       setLoading(true);
-      setError(false); 
-      setShortenLink(""); 
-    
+      setError(false);
+      setShortenLink("");
+
       const res = await axios(
         `https://tinyurl.com/api-create.php?url=${encodeURIComponent(
           inputValue
         )}`
       );
-      
-      setShortenLink(res.data);
+      let result = res.data;
+
+      setShortenLink(result);
+
+      // Store in cache
+      setUrlCache((prev) => ({
+        ...prev,
+        [inputValue]: result,
+      }));
+
+      // Add to history
+      const newUrl = {
+        id: Date.now(),
+        original: inputValue,
+        short: result,
+        created: new Date().toLocaleString(),
+      };
+
+      setUrlHistory((prev) => [newUrl, ...prev]);
     } catch (error) {
-      setError(true); 
+      setError(true);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (inputValue.length) {
-      fetchData();
-    } else {
+    if (!inputValue.length) {
       setShortenLink("");
       setError(false);
+      return;
     }
+
+    fetchData();
   }, [inputValue]);
 
+  // Save history to localStorage whenever it changes
   useEffect(() => {
+    if (urlHistory.length > 0) {
+      localStorage.setItem("urlHistory", JSON.stringify(urlHistory));
+    }
+  }, [urlHistory]);
+
+  // Save cache to localStorage whenever it changes
+  useEffect(() => {
+    if (Object.keys(urlCache).length > 0) {
+      localStorage.setItem("urlCache", JSON.stringify(urlCache));
+    }
+  }, [urlCache]);
+
+  useEffect(() => {
+    if (!copied) return;
     const timer = setTimeout(() => {
       setCopied(false);
     }, 1000);
@@ -65,10 +111,16 @@ const LinkResult = ({ inputValue }) => {
             className={copied ? "copied" : ""}
             onClick={() => copyToClipboard(shortenLink)}
           >
-            {!copied ? "Copy to clipboard" : "Copied !"}
+            {!copied ? "Copy" : "Copied !"}
           </button>
         </div>
       )}
+      <History
+        urlHistory={urlHistory}
+        setUrlHistory={setUrlHistory}
+        setUrlCache={setUrlCache}
+        copyToClipboard={copyToClipboard}
+      />
     </>
   );
 };
