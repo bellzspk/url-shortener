@@ -33,36 +33,6 @@ const History = ({
         </div>
       ) : (
         <div className="historyList">
-          {/* {urlHistory.map((item, index) => (
-            <div
-              key={item.id}
-              className="historyItem"
-              style={{ animationDelay: `${index * 0.05}s` }}
-            >
-              <div className="urlLabel">Original URL</div>
-              <div className="urlText">{item.original}</div>
-
-              <div className="shortUrlContainer">
-                <div className="shortUrlWrapper">
-                  <div className="urlLabel">Short URL</div>
-                  <a
-                    className="shortUrlLink"
-                    href={item.short}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {item.short}
-                  </a>
-                </div>
-                <button
-                  className="copyButton"
-                  onClick={() => copyToClipboard(item.short)}
-                >
-                  Copy
-                </button>
-              </div>
-            </div>
-          ))} */}
           {urlHistory.map((item, index) => (
             <div
               key={item.id}
