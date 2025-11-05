@@ -1,9 +1,25 @@
+import { useState, useEffect } from "react";
+
 const History = ({
   urlHistory,
   setUrlHistory,
   setUrlCache,
-  copyToClipboard,
 }) => {
+  const [copiedId, setCopiedId] = useState(null);
+
+  const copyToClipboard = (text, id) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+  };
+
+  useEffect(() => {
+    if (!copiedId) return;
+    const timer = setTimeout(() => {
+      setCopiedId(null);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [copiedId]);
+
   const clearHistory = () => {
     if (window.confirm("Are you sure you want to clear all history?")) {
       setUrlHistory([]);
@@ -29,7 +45,9 @@ const History = ({
 
       {urlHistory.length === 0 ? (
         <div className="emptyState">
-          No URLs shortened yet. Enter a URL above to get started! 🚀
+          <div className="emptyStateIcon">🔗</div>
+          <p>No URLs shortened yet</p>
+          <p className="emptyStateSubtext">Enter a URL above to get started!</p>
         </div>
       ) : (
         <div className="historyList">
@@ -39,16 +57,19 @@ const History = ({
               className="historyItem"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
-              <div>
-                <p className="shortUrl"> {item.short}</p>
+              <div className="historyItemHeader">
+                <p className="shortUrl">🔗 {item.short}</p>
+                <span className="timestamp">{item.created}</span>
               </div>
               <div className="urlContainer">
-                <p className="originalUrl">{item.original}</p>
+                <p className="originalUrl" title={item.original}>
+                  {item.original}
+                </p>
                 <button
                   className="copyButton"
-                  onClick={() => copyToClipboard(item.short)}
+                  onClick={() => copyToClipboard(item.short, item.id)}
                 >
-                  Copy
+                  {copiedId === item.id ? "Copied !" : "Copy"}
                 </button>
               </div>
             </div>

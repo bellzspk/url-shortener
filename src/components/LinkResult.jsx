@@ -94,14 +94,6 @@ const LinkResult = ({
     return () => clearTimeout(timer);
   }, [copied]);
 
-  // if (loading) {
-  //   return <p className="noData">Loading...</p>;
-  // }
-
-  // if (error) {
-  //   return <p className="noData">Something went wrong :(</p>;
-  // }
-
   return (
     <>
       {loading && <p className="noData">Loading...</p>}
@@ -110,7 +102,7 @@ const LinkResult = ({
         <div className="result">
           <p>{shortenLink}</p>
           <button
-            className={copied ? "copied" : ""}
+            className="copyButton"
             onClick={() => copyToClipboard(shortenLink)}
           >
             {!copied ? "Copy" : "Copied !"}
@@ -121,7 +113,6 @@ const LinkResult = ({
         urlHistory={urlHistory}
         setUrlHistory={setUrlHistory}
         setUrlCache={setUrlCache}
-        copyToClipboard={copyToClipboard}
       />
     </>
   );
